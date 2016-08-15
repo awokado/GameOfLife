@@ -19,7 +19,7 @@ namespace LearningGameOfLife_1
         private GameEngine()
         {
             LogConsole.WriteLine("Game engine constructor");
-            InitTheworld(10, 10,1);
+            InitTheworld(10, 10,0);
         }
 
 
@@ -53,9 +53,9 @@ namespace LearningGameOfLife_1
             {
                 for (int j = 0; j < worldArray.GetLength(1); j++)
                 {
-                    Console.Write(worldArray[i, j]);
+                    //Console.Write(worldArray[i, j]);
                 }
-                Console.Write("\n");
+                //Console.Write("\n");
             }
 
 
@@ -72,6 +72,18 @@ namespace LearningGameOfLife_1
             pixels[2] = 0x00;
             pixels[3] = 0xff;
 
+            pixels[40] = 0xff;
+            pixels[41] = 0x00;
+            pixels[42] = 0x00;
+            pixels[43] = 0xff;
+
+            pixels[396] = 0xff;
+            pixels[397] = 0x00;
+            pixels[398] = 0x00;
+            pixels[399] = 0xff;
+
+            
+
             int poz = 0;
             for (int i = 0; i < worldArray.GetLength(0); i++)
             {
@@ -82,6 +94,10 @@ namespace LearningGameOfLife_1
                     {
                         worldArray[i, j] = 1;
                         poz = (i*4 + j * 16);
+                        //Console.WriteLine(poz);
+                        //Console.Write(i);
+                        //Console.WriteLine(j);
+                        Console.WriteLine("- " + i + " " + j + " " + poz);
                         pixels[poz + 0] = 0xff;
                         pixels[poz + 1] = 0x00;
                         pixels[poz + 2] = 0x00;
@@ -90,7 +106,7 @@ namespace LearningGameOfLife_1
 
                 }
             }
-
+            
 
             wbmap.WritePixels(new Int32Rect(0, 0,wbmap.PixelWidth,wbmap.PixelHeight),pixels,wbmap.PixelWidth * wbmap.Format.BitsPerPixel/8,0);
 
