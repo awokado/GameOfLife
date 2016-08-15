@@ -12,17 +12,27 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Runtime.InteropServices;
+using System.IO;
+using Microsoft.Win32.SafeHandles;
 
 namespace LearningGameOfLife_1
 {
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+        public GameEngine gameEngin;
+        private const UInt32 StdOutputHandle = 0xFFFFFFF5;
+
         public MainWindow()
         {
+            gameEngin = GameEngine.GEInstance;
             InitializeComponent();
         }
+
+
     }
 }
