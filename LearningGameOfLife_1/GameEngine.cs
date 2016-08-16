@@ -47,7 +47,7 @@ namespace LearningGameOfLife_1
 
 
 
-            int a;
+            int ab;
 
             for (int i = 0; i < worldArray.GetLength(0); i++)
             {
