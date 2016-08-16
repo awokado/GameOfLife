@@ -5,126 +5,133 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Runtime.Inter‌​opServices.WindowsRun‌​time;
 using System.IO;
+using System.Diagnostics;
 
 namespace LearningGameOfLife_1
 {
-    /** Singleton class, main game operator **/
+    /*Singleton class, main game operator*/
     public class GameEngine
     {
+
+        /*Members*/
+        private static readonly int MAX_WORLD_HEIGHT = 1000;
+        private static readonly int MAX_WORLD_WIDTH = 1000;
         private static GameEngine geInstance;
-        
-        private int[,] worldArray;
+        private int[,] worldArray = null;
+        private GameWorld gameWorld = null;
+        private PopulatingParams popParams = null;
+        private WriteableBitmap gameWorldAsWriteableBitmap = null;
+        private Image worldAsImage;
+        Grid rootGrid = null;
 
 
-        private GameEngine()
-        {
-            LogConsole.WriteLine("Game engine constructor");
-            InitTheworld(10, 10,0);
-        }
-
-
+        /*reverts with GameEngine instance*/
         public static GameEngine GEInstance
         {
             get { return geInstance ?? (geInstance = new GameEngine()); }
             set { }
         }
 
-        public void InitTheworld(int height, int width, int aliveProb)
+        internal void ShowWorld(Grid rootGrid)
         {
-            Random rnd = new Random();
-            worldArray = new int[height,width];
-            worldArray[0, 0] = 1;
+            rootGrid.Children.Add(WriteableBitmap2Image(gameWorldAsWriteableBitmap));
+        }
 
-            for (int i = 0; i < worldArray.GetLength(0); i++)
-            {
-                for (int j = 0; j < worldArray.GetLength(1); j++)
-                {
-                    if(rnd.Next(0,100) < aliveProb) worldArray[i, j] = 0; 
-                    else worldArray[i, j] = 1;
+        internal void setRootGrid(Grid rootGrid)
+        {
+            this.rootGrid = rootGrid;
+        }
 
-                }
-            }
+        /*private constructor initiates the board for game*/
+        private GameEngine()
+        {
+            LogConsole.WriteLine("Game engine constructor");
 
-
-
-            int ab;
-
-            for (int i = 0; i < worldArray.GetLength(0); i++)
-            {
-                for (int j = 0; j < worldArray.GetLength(1); j++)
-                {
-                    //Console.Write(worldArray[i, j]);
-                }
-                //Console.Write("\n");
-            }
-
-
-            //https://msdn.microsoft.com/en-us/library/system.windows.media.imaging.bitmappalette(v=vs.110).aspx
-            //http://www.i-programmer.info/programming/wpf-workings/527-writeablebitmap.html?start=1
-
-            BitmapImage b = new BitmapImage();
-
-            var wbmap = new WriteableBitmap(height,width, 30,30, PixelFormats.Bgra32,null);
-            byte[] pixels = new byte[wbmap.PixelHeight * wbmap.PixelWidth *wbmap.Format.BitsPerPixel / 8];
-            //The order of the bytes is Blue, Green, Red and Alpha.
-            pixels[0] = 0xff;
-            pixels[1] = 0x00;
-            pixels[2] = 0x00;
-            pixels[3] = 0xff;
-
-            pixels[40] = 0xff;
-            pixels[41] = 0x00;
-            pixels[42] = 0x00;
-            pixels[43] = 0xff;
-
-            pixels[396] = 0xff;
-            pixels[397] = 0x00;
-            pixels[398] = 0x00;
-            pixels[399] = 0xff;
-
-            
-
-            int poz = 0;
-            for (int i = 0; i < worldArray.GetLength(0); i++)
-            {
-                for (int j = 0; j < worldArray.GetLength(1); j++)
-                {
-                    if (rnd.Next(0, 100) < aliveProb) worldArray[i, j] = 0;
-                    else
-                    {
-                        worldArray[i, j] = 1;
-                        poz = (i*4 + j * 16);
-                        //Console.WriteLine(poz);
-                        //Console.Write(i);
-                        //Console.WriteLine(j);
-                        Console.WriteLine("- " + i + " " + j + " " + poz);
-                        pixels[poz + 0] = 0xff;
-                        pixels[poz + 1] = 0x00;
-                        pixels[poz + 2] = 0x00;
-                        pixels[poz + 3] = 0xff;
-                    }
-
-                }
-            }
-            
-
-            wbmap.WritePixels(new Int32Rect(0, 0,wbmap.PixelWidth,wbmap.PixelHeight),pixels,wbmap.PixelWidth * wbmap.Format.BitsPerPixel/8,0);
-
-
-            Console.WriteLine(pixels.Length);
-            CreateThumbnail("test.jpg", wbmap);
-
-
-            //b.BeginInit();
-            //b.UriSource = new Uri("c:\\plus.png");
-            //b.EndInit();
-
-
+            /*this should not be here*/
+            InitTheworld(900, 900, 15, true);
+            gameWorldAsWriteableBitmap = getActualGameWorldAsWriteableBitmap(gameWorld.worldHeight, gameWorld.worldWidth, gameWorld.world);
+            worldAsImage = WriteableBitmap2Image(gameWorldAsWriteableBitmap);
         }
 
 
 
 
+        /*Creates and array of int which will represent the world of game, it will return false if init will fail
+        height - should be not greater than 1000
+        width -should be not greater than 1000
+        aliveProb - how probable that considered pixel will be alive - IDEA: create it as object, in future pixel can havemore than dead/alive stage
+        IDEA new param: populateMethod - populate array in other ways tahn rand, maybe create alive guys in some patterns
+        isWrappable - set the parameter dfining is world wrapped or not*/
+        //https://msdn.microsoft.com/en-us/library/system.windows.media.imaging.bitmappalette(v=vs.110).aspx
+        //http://www.i-programmer.info/programming/wpf-workings/527-writeablebitmap.html?start=1
+
+        public bool InitTheworld(int height, int width, int aliveProb, bool isWrappable)
+        {
+
+            /*DIAGNOSTIC*/
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+            /*DIAGNOSTIC*/
+
+            /*check the arguments*/
+            if (height > MAX_WORLD_HEIGHT | width > MAX_WORLD_WIDTH) { Console.WriteLine("Zainicjalizowna za duży świat"); return false; }
+            gameWorld = new GameWorld(height, width, isWrappable);
+            popParams = new PopulatingParams(97);
+            gameWorld.Populate(GameWorld.MethodsOfPopulation.random, popParams);
+
+            /*DIAGNOSTIC*/
+            stopWatch.Stop();
+            TimeSpan ts = stopWatch.Elapsed;
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}", ts.Hours, ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+            Console.WriteLine("RunTime " + elapsedTime);
+            /*DIAGNOSTIC*/
+
+            return true;
+        }
+
+
+        /*return with WriteableBitmap of actual world
+        should I porotect it form null?
+        what if I want represent a fello with more than one pix*/
+        public WriteableBitmap getActualGameWorldAsWriteableBitmap(int worldHeight, int worldWidth, int[,] world)
+        {
+            var wbmap = new WriteableBitmap(gameWorld.worldHeight, gameWorld.worldWidth, 10, 10, PixelFormats.Bgra32, null);
+            byte[] pixels = new byte[wbmap.PixelHeight * wbmap.PixelWidth * wbmap.Format.BitsPerPixel / 8];
+
+            int poz = 0;
+            for (int i = 0; i < world.GetLength(0); i++)
+            {
+                for (int j = 0; j < world.GetLength(1); j++)
+                {
+                    poz = 4 * (i * world.GetLength(1) + j);
+                    if (world[i, j] == 1)
+                    {
+                        pixels[poz + 0] = 0xff;
+                        pixels[poz + 1] = 0x00;
+                        pixels[poz + 2] = 0x00;
+                        pixels[poz + 3] = 0xff;
+                    }
+                }
+            }
+            wbmap.WritePixels(new Int32Rect(0, 0, wbmap.PixelWidth, wbmap.PixelHeight), pixels, wbmap.PixelWidth * wbmap.Format.BitsPerPixel / 8, 0);
+            CreateThumbnail("test2.png", wbmap);
+            return wbmap;
+        }
+
+        private Image WriteableBitmap2Image(WriteableBitmap gameWorldAsWriteableBitmap)
+        {
+            var anImage = new Image();
+            anImage.Width = gameWorldAsWriteableBitmap.PixelWidth;
+            anImage.Height = gameWorldAsWriteableBitmap.PixelHeight;
+            anImage.HorizontalAlignment = HorizontalAlignment.Left;
+            anImage.VerticalAlignment = VerticalAlignment.Top;
+            anImage.Margin = new Thickness(500, 500, 0, 0);
+            anImage.Source = gameWorldAsWriteableBitmap;
+            return anImage;
+        }
+
+
+        /*CLEAN MEEEEEEEEEEEEEEEE*/
         void CreateThumbnail(string filename, BitmapSource image5)
         {
             if (filename != string.Empty)
@@ -137,6 +144,8 @@ namespace LearningGameOfLife_1
                 }
             }
         }
+
+
 
     }
 }

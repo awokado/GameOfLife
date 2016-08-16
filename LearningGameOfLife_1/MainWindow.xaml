@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="650" Width="800" WindowStartupLocation="CenterScreen">
     <Grid>
-        <Grid HorizontalAlignment="Left" Height="600" Margin="10,10,0,0" VerticalAlignment="Top" Width="600
+        <Grid x:Name="rootGrid" HorizontalAlignment="Left" Height="600" Margin="10,10,0,0" VerticalAlignment="Top" Width="600
               " Background="#FFE6E2E2"/>
 
     </Grid>

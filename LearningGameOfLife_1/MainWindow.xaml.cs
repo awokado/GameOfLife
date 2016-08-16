@@ -31,6 +31,9 @@ namespace LearningGameOfLife_1
         {
             gameEngin = GameEngine.GEInstance;
             InitializeComponent();
+            gameEngin.setRootGrid(rootGrid);
+            gameEngin.ShowWorld(rootGrid);
+
         }
 
 
