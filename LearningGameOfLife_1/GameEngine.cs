@@ -13,44 +13,32 @@ namespace LearningGameOfLife_1
     public class GameEngine
     {
 
-        /*Members*/
+        //**********************************MEMBERS**********************************//
         private static readonly int MAX_WORLD_HEIGHT = 1000;
         private static readonly int MAX_WORLD_WIDTH = 1000;
         private static GameEngine geInstance;
-        private int[,] worldArray = null;
-        private GameWorld gameWorld = null;
+        public GameWorld gameWorld { get; private set; } = null;
         private PopulatingParams popParams = null;
-        private WriteableBitmap gameWorldAsWriteableBitmap = null;
-        private Image worldAsImage;
-        Grid rootGrid = null;
 
 
+        //**********************************METHODS**********************************//
         /*reverts with GameEngine instance*/
         public static GameEngine GEInstance
         {
-            get { return geInstance ?? (geInstance = new GameEngine()); }
+            get
+            {
+                LogConsole.WriteLine("Game engine getInstance");
+                return geInstance ?? (geInstance = new GameEngine());
+
+            }
             set { }
         }
 
-        internal void ShowWorld(Grid rootGrid)
-        {
-            rootGrid.Children.Add(WriteableBitmap2Image(gameWorldAsWriteableBitmap));
-        }
-
-        internal void setRootGrid(Grid rootGrid)
-        {
-            this.rootGrid = rootGrid;
-        }
 
         /*private constructor initiates the board for game*/
         private GameEngine()
         {
             LogConsole.WriteLine("Game engine constructor");
-
-            /*this should not be here*/
-            InitTheworld(580, 580, 2, true);
-            gameWorldAsWriteableBitmap = getActualGameWorldAsWriteableBitmap(gameWorld.worldHeight, gameWorld.worldWidth, gameWorld.world);
-            worldAsImage = WriteableBitmap2Image(gameWorldAsWriteableBitmap);
         }
 
 
@@ -86,63 +74,6 @@ namespace LearningGameOfLife_1
 
             return true;
         }
-
-
-        /*return with WriteableBitmap of actual world
-        should I porotect it form null?
-        what if I want represent a fello with more than one pix*/
-        public WriteableBitmap getActualGameWorldAsWriteableBitmap(int worldHeight, int worldWidth, int[,] world)
-        {
-            var wbmap = new WriteableBitmap(gameWorld.worldHeight, gameWorld.worldWidth, 10, 10, PixelFormats.Bgra32, null);
-            byte[] pixels = new byte[wbmap.PixelHeight * wbmap.PixelWidth * wbmap.Format.BitsPerPixel / 8];
-
-            int poz = 0;
-            for (int i = 0; i < world.GetLength(0); i++)
-            {
-                for (int j = 0; j < world.GetLength(1); j++)
-                {
-                    poz = 4 * (i * world.GetLength(1) + j);
-                    if (world[i, j] == 1)
-                    {
-                        pixels[poz + 0] = 0xff;
-                        pixels[poz + 1] = 0x00;
-                        pixels[poz + 2] = 0x00;
-                        pixels[poz + 3] = 0xff;
-                    }
-                }
-            }
-            wbmap.WritePixels(new Int32Rect(0, 0, wbmap.PixelWidth, wbmap.PixelHeight), pixels, wbmap.PixelWidth * wbmap.Format.BitsPerPixel / 8, 0);
-            CreateThumbnail("test2.png", wbmap);
-            return wbmap;
-        }
-
-        private Image WriteableBitmap2Image(WriteableBitmap gameWorldAsWriteableBitmap)
-        {
-            var anImage = new Image();
-            anImage.Width = gameWorldAsWriteableBitmap.PixelWidth;
-            anImage.Height = gameWorldAsWriteableBitmap.PixelHeight;
-            anImage.HorizontalAlignment = HorizontalAlignment.Left;
-            anImage.VerticalAlignment = VerticalAlignment.Top;
-            anImage.Margin = new Thickness(10, 10, 10, 10);
-            anImage.Source = gameWorldAsWriteableBitmap;
-            return anImage;
-        }
-
-
-        /*CLEAN MEEEEEEEEEEEEEEEE*/
-        void CreateThumbnail(string filename, BitmapSource image5)
-        {
-            if (filename != string.Empty)
-            {
-                using (FileStream stream5 = new FileStream(filename, FileMode.Create))
-                {
-                    PngBitmapEncoder encoder5 = new PngBitmapEncoder();
-                    encoder5.Frames.Add(BitmapFrame.Create(image5));
-                    encoder5.Save(stream5);
-                }
-            }
-        }
-
 
 
     }

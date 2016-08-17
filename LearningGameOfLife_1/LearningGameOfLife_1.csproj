@@ -85,6 +85,7 @@
     </Compile>
     <Compile Include="GameEngine.cs" />
     <Compile Include="GameWorld.cs" />
+    <Compile Include="GraphicEngine.cs" />
     <Compile Include="LogConsole.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

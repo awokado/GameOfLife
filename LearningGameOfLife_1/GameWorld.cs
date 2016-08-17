@@ -14,13 +14,14 @@ namespace LearningGameOfLife_1
     /* Class specyfying how does the world look like */
     public class GameWorld
     {
-        /* Members */
+        //**********************************MEMBERS**********************************//
         public int worldHeight { get; private set; }
         public int worldWidth { get; private set; }
         public bool isWrappable { get; private set; }
         public int[,] world { get; private set; }
         public enum MethodsOfPopulation { random, other, test };
 
+        //**********************************METHODS**********************************//
         /*Constructor*/
         public GameWorld(int worldHeight, int worldWidth, bool isWrappable)
         {

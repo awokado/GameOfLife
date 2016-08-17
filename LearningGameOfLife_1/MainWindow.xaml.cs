@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using System.IO;
 using Microsoft.Win32.SafeHandles;
+using System.Windows.Interop;
 
 namespace LearningGameOfLife_1
 {
@@ -24,15 +25,31 @@ namespace LearningGameOfLife_1
     /// </summary>
     public partial class MainWindow : Window
     {
-        public GameEngine gameEngin;
+        public GameEngine gameEngine;
+        public GraphicEngine graphicEngine;
         private const UInt32 StdOutputHandle = 0xFFFFFFF5;
 
         public MainWindow()
         {
-            gameEngin = GameEngine.GEInstance;
             InitializeComponent();
-            gameEngin.setRootGrid(rootGrid);
-            gameEngin.ShowWorld(rootGrid);
+
+            gameEngine = GameEngine.GEInstance;
+            gameEngine.InitTheworld(580, 580, 2, true);
+
+            graphicEngine = GraphicEngine.GraphicEngineInstance;
+
+            graphicEngine.setHandler(this);
+            LogConsole.WriteLine("przed view");
+            graphicEngine.initView();
+
+
+
+            graphicEngine.setRootGrid(rootGrid);
+            graphicEngine.ShowWorld(rootGrid);
+
+            //IntPtr windowHandle = new WindowInteropHelper(this).Handle;
+            //HwndSource source = (HwndSource)HwndSource.FromVisual(this);
+            // http://blog.scottlogic.com/2012/04/20/everything-you-wanted-to-know-about-databinding-in-wpf-silverlight-and-wp7-part-two.html
 
         }
 
