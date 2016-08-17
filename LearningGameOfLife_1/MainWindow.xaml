@@ -5,10 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LearningGameOfLife_1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="650" Width="800" WindowStartupLocation="CenterScreen">
+        Title="MainWindow" Height="670" Width="800" WindowStartupLocation="CenterScreen" MinWidth="750" MinHeight="670">
     <Grid>
-        <Grid x:Name="rootGrid" HorizontalAlignment="Left" Height="600" Margin="10,10,0,0" VerticalAlignment="Top" Width="600
-              " Background="#FFE6E2E2"/>
+        <Grid.RowDefinitions>
+            <RowDefinition MinHeight="600"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MinWidth="600"/>
+            <ColumnDefinition Width="150"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid x:Name="rootGrid" Grid.Row="0" Grid.Column="0" MinWidth="400" Background="#FF999999"/>
+        <Grid  Grid.Row="0" Grid.Column="1" MinWidth="400" Background="AliceBlue"/>
+        <Grid  Grid.Row="1" Grid.Column="0" MinWidth="400" Background="Aqua"/>
+        <Grid  Grid.Row="1" Grid.Column="1" MinWidth="400" Background="Green"/>
+
+        <Label Content="r 0 c 0" Grid.Row="0" Grid.Column="0"/>
+        <Label Content="r 0 c 1" Grid.Row="0" Grid.Column="1"/>
+        <Label Content="r 1 c 0" Grid.Row="1" Grid.Column="0"/>
+        <Label Content="r 1 c 1" Grid.Row="1" Grid.Column="1"/>
 
     </Grid>
 </Window>

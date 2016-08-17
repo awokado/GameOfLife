@@ -48,12 +48,10 @@ namespace LearningGameOfLife_1
             LogConsole.WriteLine("Game engine constructor");
 
             /*this should not be here*/
-            InitTheworld(900, 900, 15, true);
+            InitTheworld(580, 580, 2, true);
             gameWorldAsWriteableBitmap = getActualGameWorldAsWriteableBitmap(gameWorld.worldHeight, gameWorld.worldWidth, gameWorld.world);
             worldAsImage = WriteableBitmap2Image(gameWorldAsWriteableBitmap);
         }
-
-
 
 
         /*Creates and array of int which will represent the world of game, it will return false if init will fail
@@ -76,7 +74,7 @@ namespace LearningGameOfLife_1
             /*check the arguments*/
             if (height > MAX_WORLD_HEIGHT | width > MAX_WORLD_WIDTH) { Console.WriteLine("Zainicjalizowna za duży świat"); return false; }
             gameWorld = new GameWorld(height, width, isWrappable);
-            popParams = new PopulatingParams(97);
+            popParams = new PopulatingParams(aliveProb);
             gameWorld.Populate(GameWorld.MethodsOfPopulation.random, popParams);
 
             /*DIAGNOSTIC*/
@@ -125,7 +123,7 @@ namespace LearningGameOfLife_1
             anImage.Height = gameWorldAsWriteableBitmap.PixelHeight;
             anImage.HorizontalAlignment = HorizontalAlignment.Left;
             anImage.VerticalAlignment = VerticalAlignment.Top;
-            anImage.Margin = new Thickness(500, 500, 0, 0);
+            anImage.Margin = new Thickness(10, 10, 10, 10);
             anImage.Source = gameWorldAsWriteableBitmap;
             return anImage;
         }

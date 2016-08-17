@@ -60,7 +60,7 @@ namespace LearningGameOfLife_1
             {
                 for (int j = 0; j < world.GetLength(1); j++)
                 {
-                    if (rnd.Next(0, 100) < popPar.aliveProbability) world[i, j] = 0;
+                    if (rnd.Next(0, 100) > popPar.aliveProbability) world[i, j] = 0;
                     else world[i, j] = 1;
                 }
             }
