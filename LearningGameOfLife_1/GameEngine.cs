@@ -60,7 +60,7 @@ namespace LearningGameOfLife_1
             /*DIAGNOSTIC*/
 
             /*check the arguments*/
-            if (height > MAX_WORLD_HEIGHT | width > MAX_WORLD_WIDTH) { Console.WriteLine("Zainicjalizowna za duży świat"); return false; }
+            if (height > MAX_WORLD_HEIGHT | width > MAX_WORLD_WIDTH) { Console.WriteLine("Zainicjalizowno za duży świat"); return false; }
             gameWorld = new GameWorld(height, width, isWrappable);
             popParams = new PopulatingParams(aliveProb);
             gameWorld.Populate(GameWorld.MethodsOfPopulation.random, popParams);
@@ -73,6 +73,14 @@ namespace LearningGameOfLife_1
             /*DIAGNOSTIC*/
 
             return true;
+        }
+
+        public void Run(int noOfDays)
+        {
+            for(int i =0; i > noOfDays; i++)
+            {
+                gameWorld.getNextDay();
+            }
         }
 
 

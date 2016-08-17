@@ -9,16 +9,24 @@ namespace LearningGameOfLife_1
     /*This class will handle al params for populating methods*/
     public class PopulatingParams
     {
+        //**********************************MEMBERS**********************************//
+        public int aliveProbability { get; private set; } = 5;         //def probab of beeing alive =)
 
-        public int aliveProbability { get; private set; } = 50;         //probab of beeing alive =)
 
+        //**********************************METHODS**********************************//
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public PopulatingParams()
         {
             LogConsole.WriteLine("PopulatingParams constructor");
             aliveProbability = 50;
         }
 
-        /*test of calling constructor*/
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="aliveProbability">Probability of single cell beeing alive</param>
         public PopulatingParams(int aliveProbability) : this()
         {
             this.aliveProbability = aliveProbability;

@@ -34,7 +34,7 @@ namespace LearningGameOfLife_1
             InitializeComponent();
 
             gameEngine = GameEngine.GEInstance;
-            gameEngine.InitTheworld(580, 580, 2, true);
+            gameEngine.InitTheworld(580, 580, 99, true);
 
             graphicEngine = GraphicEngine.GraphicEngineInstance;
 

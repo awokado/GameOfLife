@@ -10,19 +10,27 @@ using System.Windows.Media.Imaging;
 
 namespace LearningGameOfLife_1
 {
-
-    /* Class specyfying how does the world look like */
+    /// <summary>
+    /// Class specyfying how does the world look like
+    /// </summary>
     public class GameWorld
     {
         //**********************************MEMBERS**********************************//
         public int worldHeight { get; private set; }
         public int worldWidth { get; private set; }
+        public int age{ get; private set; }
         public bool isWrappable { get; private set; }
         public int[,] world { get; private set; }
         public enum MethodsOfPopulation { random, other, test };
+        public enum NextDayRules { std, other, test };
 
         //**********************************METHODS**********************************//
-        /*Constructor*/
+        /// <summary>
+        /// Constructor of the world - feel the power
+        /// </summary>
+        /// <param name="worldHeight">how big is this world</param>
+        /// <param name="worldWidth">how big is this world</param>
+        /// <param name="isWrappable">is it round(wrappable) or flat</param>
         public GameWorld(int worldHeight, int worldWidth, bool isWrappable)
         {
             LogConsole.WriteLine("GameWorld constructor");
@@ -30,15 +38,22 @@ namespace LearningGameOfLife_1
             this.worldWidth = worldWidth;
             this.isWrappable = isWrappable;
             world = new int[this.worldHeight, this.worldWidth];
+            age = 0;
         }
 
-        /*Populates the world maintaining rules of populating*/
+        /// <summary>
+        /// Populates the world maintaining rules of populating
+        /// </summary>
+        /// <param name="method">set of rules describing how to populate the world</param>
+        /// <param name="popPar">parameters for method</param>
+        /// <returns></returns>
         public bool Populate(MethodsOfPopulation method, PopulatingParams popPar)
         {
             switch (method)
             {
                 case MethodsOfPopulation.random:
                     PopulatingMethodRandom(popPar);
+                    age++;
                     return true;
 
                 case MethodsOfPopulation.other:
@@ -52,7 +67,10 @@ namespace LearningGameOfLife_1
             }
         }
 
-        /*Populate the world array with live members accord. to probability value*/
+        /// <summary>
+        /// Populate the world array with live members accord. to probability value
+        /// </summary>
+        /// <param name="popPar">parameters for method</param>
         private void PopulatingMethodRandom(PopulatingParams popPar)
         {
             Random rnd = new Random();
@@ -66,6 +84,13 @@ namespace LearningGameOfLife_1
                 }
             }
         }
+
+        public int[,] getNextDay(NextDayRules nxDayRules)
+        {
+            return null;
+        }
+
+
 
     }
 }
