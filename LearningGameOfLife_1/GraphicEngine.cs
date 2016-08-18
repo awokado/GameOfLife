@@ -15,11 +15,11 @@ namespace LearningGameOfLife_1
     public class GraphicEngine
     {
         //**********************************MEMBERS**********************************//
-        private static GraphicEngine graphicEngineInstance = null;
-        private static GameEngine gameEngineInstance = GameEngine.GEInstance;
+        private static GraphicEngine _graphicEngine = null;
+        private static GameEngine _gameEngine = GameEngine.GEInstance;
         private MainWindow mainWindowHandle;
         public static GraphicEngine GraphicEngineInstance {
-            get { return graphicEngineInstance ?? (graphicEngineInstance = new GraphicEngine()); }
+            get { return _graphicEngine ?? (_graphicEngine = new GraphicEngine()); }
             set { }
         }
         private WriteableBitmap gameWorldAsWriteableBitmap = null;
@@ -43,15 +43,8 @@ namespace LearningGameOfLife_1
         /// </summary>
         public void initView()
         {
-            Console.WriteLine(GameEngine.GEInstance.gameWorld.world.GetLength(0));
-            Console.WriteLine(gameEngineInstance.gameWorld.world.GetLength(1));
-            gameWorldAsWriteableBitmap = getActualGameWorldAsWriteableBitmap(gameEngineInstance.gameWorld.world.GetLength(0), gameEngineInstance.gameWorld.world.GetLength(1), gameEngineInstance.gameWorld.world);
+            gameWorldAsWriteableBitmap = getActualGameWorldAsWriteableBitmap(_gameEngine.gameWorld.world.GetLength(0), _gameEngine.gameWorld.world.GetLength(1), _gameEngine.gameWorld.world);
         }
-
-
-
-
-
 
 
 

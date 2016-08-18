@@ -21,6 +21,7 @@ namespace LearningGameOfLife_1
         public int age{ get; private set; }
         public bool isWrappable { get; private set; }
         public int[,] world { get; private set; }
+        public int[,] oldWorld { get; private set; }
         public enum MethodsOfPopulation { random, other, test };
         public enum NextDayRules { std, other, test };
 
@@ -55,13 +56,10 @@ namespace LearningGameOfLife_1
                     PopulatingMethodRandom(popPar);
                     age++;
                     return true;
-
                 case MethodsOfPopulation.other:
                     return true;
-
                 case MethodsOfPopulation.test:
                     return true;
-
                 default:
                     return false;
             }
@@ -85,9 +83,38 @@ namespace LearningGameOfLife_1
             }
         }
 
+
+        internal void getNextDay(NextDayCalc nxDayCalc)
+        {
+            oldWorld = world;
+            world = nxDayCalc.getNextDay(this);
+            age++;
+        }
+
+
+
+
+        /// <summary>
+        /// Generates new world array base on set of rules 
+        /// </summary>
+        /// <param name="nxDayRules">which rules should I use</param>
+        /// <returns>new state of the world</returns>
         public int[,] getNextDay(NextDayRules nxDayRules)
         {
-            return null;
+            switch (nxDayRules)
+            {
+                case NextDayRules.std:
+                    return world;
+
+                case NextDayRules.other:
+                    return world;
+
+                case NextDayRules.test:
+                    return world;
+
+                default:
+                    return world;
+            }
         }
 
 

@@ -34,18 +34,22 @@ namespace LearningGameOfLife_1
             InitializeComponent();
 
             gameEngine = GameEngine.GEInstance;
-            gameEngine.InitTheworld(580, 580, 99, true);
+            gameEngine.InitTheworld(10, 10, 99, true);
 
             graphicEngine = GraphicEngine.GraphicEngineInstance;
 
             graphicEngine.setHandler(this);
             LogConsole.WriteLine("przed view");
             graphicEngine.initView();
-
+            
 
 
             graphicEngine.setRootGrid(rootGrid);
             graphicEngine.ShowWorld(rootGrid);
+            
+
+
+
 
             //IntPtr windowHandle = new WindowInteropHelper(this).Handle;
             //HwndSource source = (HwndSource)HwndSource.FromVisual(this);
@@ -53,6 +57,12 @@ namespace LearningGameOfLife_1
 
         }
 
-
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            gameEngine.Run(1);
+            graphicEngine.initView();
+            graphicEngine.setRootGrid(rootGrid);
+            graphicEngine.ShowWorld(rootGrid);
+        }
     }
 }

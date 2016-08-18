@@ -16,9 +16,10 @@ namespace LearningGameOfLife_1
         //**********************************MEMBERS**********************************//
         private static readonly int MAX_WORLD_HEIGHT = 1000;
         private static readonly int MAX_WORLD_WIDTH = 1000;
-        private static GameEngine geInstance;
+        private static GameEngine _geInstance;
         public GameWorld gameWorld { get; private set; } = null;
         private PopulatingParams popParams = null;
+        private NextDayCalc nxDayCalc = null;
 
 
         //**********************************METHODS**********************************//
@@ -28,7 +29,10 @@ namespace LearningGameOfLife_1
             get
             {
                 LogConsole.WriteLine("Game engine getInstance");
-                return geInstance ?? (geInstance = new GameEngine());
+                if (_geInstance == null) { LogConsole.WriteLine("nie istnieje jeszcze instancja Game engine"); }
+                else LogConsole.WriteLine("istnieje już instancja Game engine");
+                
+                return _geInstance ?? (_geInstance = new GameEngine());
 
             }
             set { }
@@ -75,11 +79,14 @@ namespace LearningGameOfLife_1
             return true;
         }
 
+
         public void Run(int noOfDays)
         {
-            for(int i =0; i > noOfDays; i++)
+            nxDayCalc = new NextDayCalc(NextDayCalc.NextDayRules.Conway);
+            for (int i = 0; i < noOfDays; i++)
             {
-                gameWorld.getNextDay();
+                Console.WriteLine("go gog run run");
+                gameWorld.getNextDay(nxDayCalc);
             }
         }
 

@@ -22,7 +22,9 @@
         <Grid  Grid.Row="1" Grid.Column="1" MinWidth="400" Background="Green"/>
 
         <Label Content="r 0 c 0" Grid.Row="0" Grid.Column="0"/>
-        <Label Content="r 0 c 1" Grid.Row="0" Grid.Column="1"/>
+        <Label Grid.Row="0" Grid.Column="1">
+            <Button x:Name="button" Content="Button" Height="33" Width="71" Click="button_Click"/>
+        </Label>
         <Label Content="r 1 c 0" Grid.Row="1" Grid.Column="0"/>
         <Label Content="r 1 c 1" Grid.Row="1" Grid.Column="1"/>
 

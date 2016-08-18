@@ -93,6 +93,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NextDayCalc.cs" />
     <Compile Include="PopulatingParams.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
