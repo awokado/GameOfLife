@@ -115,6 +115,7 @@ namespace LearningGameOfLife_1
 
         internal void ShowWorld(Grid rootGrid)
         {
+            rootGrid.Children.Clear();
             rootGrid.Children.Add(WriteableBitmap2Image(gameWorldAsWriteableBitmap));
         }
 
