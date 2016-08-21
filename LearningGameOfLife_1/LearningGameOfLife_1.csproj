@@ -77,7 +77,6 @@
     </ApplicationDefinition>
     <Compile Include="cld2108.cs" />
     <Compile Include="GetNextDay.cs" />
-    <Compile Include="NextDayCalc.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
