@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LearningGameOfLife_1
 {
-    class usun
+    class GetNextDay
     {
     }
 }

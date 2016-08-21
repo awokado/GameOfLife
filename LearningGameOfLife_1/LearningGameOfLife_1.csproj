@@ -76,7 +76,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="cld2108.cs" />
-    <Compile Include="usun.cs" />
+    <Compile Include="GetNextDay.cs" />
+    <Compile Include="NextDayCalc.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -95,7 +96,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NextDayCalc.cs" />
     <Compile Include="PopulatingParams.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
